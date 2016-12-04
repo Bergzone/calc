@@ -1,0 +1,158 @@
+<script>	
+	lab=	"sin,cos,tan,sec,sqrt,curt,bks,asn,acs,atn,csc,sqr,cbe,clr,"
+		+	"n!,rnd,(,),exp,nat,log,a,x,7,8,9,*,/,b,y,4,5,6,-,^,"
+		+	"c,z,1,2,3,+,1/n,e,pi,+/-,0,.,=,%";
+	labels	=lab.split(',');
+	vars	=Array('a','b','c','x','y','z');
+	vals	=Array(0,0,299792458,0,0,0);
+</script>
+
+<style>	th		{color:fda; font:italic 12 arial; width:24;		}
+	.readout	{width:420; height:45; background:black; color:fe6; 
+				font:bold 28 system ; text-align:right; padding:9;
+				border-radius:4; 				}
+	.display	{width:430; height:45; background:orange; padding:20;
+				text-align:center; border:4 solid fda;
+				border-top-left-radius:7;
+				border-top-right-radius:7;
+				border-bottom-color:c80;
+				border-right-color: c80;			}
+	.btnpad		{width:446; height:400; background:navy; padding:12; color:fff;
+				border:4 outset blue; border-bottom-left-radius:7;
+				border-bottom-right-radius:7;
+				border-bottom-color:005;
+				border-right-color: 005;
+				font:14 arial;					}
+	 button		{width:58;  height:30; margin:2; font:bold 18 calibri;
+				background:fd6;	border-radius:4;		}
+	.val		{width:150; height:20; background:silver; margin:1;
+				border-radius:4, font:14 arial; text-align:right}
+	.asn		{cursor:pointer}
+</style>
+
+<script>	//////////// MAIN DECISION BRANCH HANDLER ////////////
+buf=0;
+op='no';
+nop=true;
+ntr=true;
+DEG=180/Math.PI;
+function act(ctl)
+{	d=dis.value;
+	switch(ctl)
+	{
+
+	case '7': case '8': case '9':
+	case '4': case '5': case '6':
+	case '1': case '2': case '3':
+		if(ntr==true)dis.value="";
+		if(d=="0")dis.value="";dis.value+=ctl;ntr=false;  	break;
+	case '0'  : if(d!='0')dis.value+='0';				break;
+	case 'sin': dis.value=Math.sin(d/DEG);		ntr=1;		break;
+	case 'cos': dis.value=Math.cos(d/DEG);		ntr=1;		break;
+	case 'csc': dis.value=1/Math.sin(d/DEG);	ntr=1;		break;
+	case 'sec': dis.value=1/Math.cos(d/DEG);	ntr=1; 		break;
+
+	case 'tan': dis.value=Math.tan(d/DEG);		ntr=1;		break;
+	case 'sqrt':dis.value=Math.sqrt(d);		ntr=1;		break;
+	case 'nat': dis.value=Math.log(d);		ntr=1;		break;
+	case 'log': dis.value=Math.log(d)/Math.LN10;	ntr=1;		break;
+	case 'rnd': dis.value=Math.random();		ntr=1;		break;
+	case 'asn': if(Math.abs(d)<=1)dis.value=Math.asin(d)*DEG;ntr=1;	break;
+	case 'acs': if(Math.abs(d)<=1)dis.value=Math.acos(d)*DEG;ntr=1;	break;
+	case 'atn': dis.value=Math.atan(d)*DEG;		ntr=1;		break;
+	case 'curt':dis.value=Math.pow(d,1/3);		ntr=1;		break;
+	case 'sqr': dis.value=d*d;			ntr=1;		break;
+	case 'cbe': dis.value=d*d*d;			ntr=1;		break;
+	case 'clr': dis.value="0";			ntr=1;		break;
+	case 'pi' : dis.value=Math.PI;			ntr=1;		break;
+	case 'e'  : dis.value=2.718281828459045235;	ntr=1;		break;
+	case 'a'  : dis.value=vala.value;		ntr=1;		break;
+	case 'b'  : dis.value=valb.value;		ntr=1;		break;
+	case 'c'  : dis.value=valc.value;		ntr=1;		break;
+	case 'x'  : dis.value=valx.value;		ntr=1;		break;
+	case 'y'  : dis.value=valy.value;		ntr=1;		break;
+	case 'z'  : dis.value=valz.value;		ntr=1;		break;
+	case '.'  : if(d.search(/\./)==-1)dis.value+='.';		break;
+	case 'exp': if(d.search(/e/)== -1)dis.value+='e';		break;
+	case 'bks': dis.value=d.slice(0,-1);				break;
+	case '1/n': dis.value=1/d;			ntr=1;		break;				case '+/-': dis.value=0-d;			ntr=1;		break;
+	case 'n\!': t=d--;while(d>1)t=t*d--;dis.value=t;ntr=1;		break;
+	case '+'  : reg(op); op='+';					break;
+	case '-'  : reg(op); op='-';					break;
+	case '*'  : reg(op); op='*';					break;
+	case '/'  : reg(op); op='/';					break;
+	case '^'  : reg(op); op='^';					break;
+	case '='  : docalc(op); op='zzz';				break;
+	}
+ans=(dis.value).toFixed(14);
+dis.value=ans;
+}
+
+
+
+function reg(op)
+{	
+	docalc(op);
+	buf=dis.value;
+	ntr=true;
+}
+
+
+function docalc(op)
+{	
+	switch(op)
+	{
+	case '+' : dis.value -=- buf;					break;
+	case '-' : dis.value = buf-dis.value;				break;
+	case '*' : dis.value *= buf;					break;
+	case '/' : dis.value = buf/dis.value;				break;
+	case '^' : dis.value = Math.pow(buf,dis.value);			break;
+	}	
+
+}
+</script>
+
+
+
+
+<!*************** READOUT CODE ******************>
+
+<div   class=display>
+<input class=readout id=dis type=text value=0>
+</div>
+
+<!*************** BUTTONPAD CODE *****************>
+
+<div class=btnpad>
+
+<script>
+for(n in labels)document.write("<button onmouseover =this.style.background='ffe' "
+	+ 				"onmouseout =this.style.background='fd6' " 
+	+				"onmousedown=this.style.color='ccc' "
+	+				"onmouseup  =this.style.color='black' "
+	+				"onclick    =act('" +labels[n]+ "') "
+	+ ">"
+	+ labels[n]
+	+ "</button>");
+document.write("<P>");
+</script>
+<table cellspacing=0 cellpadding=0>
+
+<!*************** PROGRAMMABLE VARIABLES CODE ******>
+
+<script>
+for(n in vars)document.write("<tr><th class=asn id="+vars[n]
+	+	" onclick=val" + vars[n] +".value=dis.value>"
+	+	vars[n] + ": </th>"
+	+	"<td> <input type=text id=val" + vars[n]
+	+	" size=16 maxlength=16 class=val "
+	+	" value=" + vals[n] + " /></td></tr>");	
+			
+</script>
+</table>
+
+</div>
+
+
+
+
