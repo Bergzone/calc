@@ -47,11 +47,12 @@ function act(ctl)
 		if(ntr==true)dis.value="";
 		if(d=="0")dis.value="";dis.value+=ctl;ntr=false;  	break;
 	case '0'  : if(d!='0')dis.value+='0';				break;
+			
+	////////////// FUNCTIONS /////////////
 	case 'sin': dis.value=Math.sin(d/DEG);		ntr=1;		break;
 	case 'cos': dis.value=Math.cos(d/DEG);		ntr=1;		break;
 	case 'csc': dis.value=1/Math.sin(d/DEG);	ntr=1;		break;
 	case 'sec': dis.value=1/Math.cos(d/DEG);	ntr=1; 		break;
-
 	case 'tan': dis.value=Math.tan(d/DEG);		ntr=1;		break;
 	case 'sqrt':dis.value=Math.sqrt(d);		ntr=1;		break;
 	case 'nat': dis.value=Math.log(d);		ntr=1;		break;
@@ -75,16 +76,19 @@ function act(ctl)
 	case '.'  : if(d.search(/\./)==-1)dis.value+='.';		break;
 	case 'exp': if(d.search(/e/)== -1)dis.value+='e';		break;
 	case 'bks': dis.value=d.slice(0,-1);				break;
-	case '1/n': dis.value=1/d;			ntr=1;		break;				case '+/-': dis.value=0-d;			ntr=1;		break;
+	case '1/n': dis.value=1/d;			ntr=1;		break;
+	case '+/-': dis.value=0-d;			ntr=1;		break;
 	case 'n\!': t=d--;while(d>1)t=t*d--;dis.value=t;ntr=1;		break;
 	case '+'  : reg(op); op='+';					break;
+			
+	/////////////// OPERATORS ///////////////
 	case '-'  : reg(op); op='-';					break;
 	case '*'  : reg(op); op='*';					break;
 	case '/'  : reg(op); op='/';					break;
 	case '^'  : reg(op); op='^';					break;
 	case '='  : docalc(op); op='zzz';				break;
 	}
-ans=(dis.value).toFixed(14);
+ans=dis.value;
 dis.value=ans;
 }
 
@@ -127,10 +131,10 @@ function docalc(op)
 
 <script>
 for(n in labels)document.write("<button onmouseover =this.style.background='ffe' "
-	+ 				"onmouseout =this.style.background='fd6' " 
-	+				"onmousedown=this.style.color='ccc' "
-	+				"onmouseup  =this.style.color='black' "
-	+				"onclick    =act('" +labels[n]+ "') "
+	+ 			"onmouseout =this.style.background='fd6' " 
+	+			"onmousedown=this.style.color='ccc' "
+	+			"onmouseup  =this.style.color='black' "
+	+			"onclick    =act('" +labels[n]+ "') "
 	+ ">"
 	+ labels[n]
 	+ "</button>");
@@ -142,11 +146,11 @@ document.write("<P>");
 
 <script>
 for(n in vars)document.write("<tr><th class=asn id="+vars[n]
-	+	" onclick=val" + vars[n] +".value=dis.value>"
-	+	vars[n] + ": </th>"
-	+	"<td> <input type=text id=val" + vars[n]
-	+	" size=16 maxlength=16 class=val "
-	+	" value=" + vals[n] + " /></td></tr>");	
+	+		" onclick=val" + vars[n] +".value=dis.value>"
+	+		vars[n] + ": </th>"
+	+		"<td> <input type=text id=val" + vars[n]
+	+		" size=16 maxlength=16 class=val "
+	+		" value=" + vals[n] + " /></td></tr>");	
 			
 </script>
 </table>
